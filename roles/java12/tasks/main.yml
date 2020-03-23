@@ -1,0 +1,27 @@
+---
+# tasks file for java12
+
+- name: download java12
+  get_url:
+    url: https://download.java.net/java/GA/jdk12.0.1/69cfe15208a647278a19ef0990eea691/12/GPL/openjdk-12.0.1_linux-x64_bin.tar.gz
+    dest: /opt
+
+- name: extract archive
+  unarchive:
+      src: /opt/openjdk-12.0.1_linux-x64_bin.tar.gz
+      dest: /opt
+
+# configure java environment
+
+- name: create file jdk12.sh
+  file:
+     path: /etc/profile.d/jdk12.sh
+     state: touch
+     mode: 755
+
+- name: edit jdk12.sh file
+  blockinfile:
+          path: /etc/profile.d/jdk12.sh
+          block: |
+              export JAVA_HOME=/opt/jdk-12.0.1
+              export PATH=\$PATH:\$JAVA_HOME/bin

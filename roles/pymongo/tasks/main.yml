@@ -1,0 +1,23 @@
+---
+# tasks file for pymongo
+
+- name: install epel-release
+  yum: 
+    name: epel-release
+    state: present
+
+- name: Install python-pymongo package for Python 2
+  yum:
+    name: python-pymongo
+    state: present
+
+# For Python 3, we need to install pip command, then mongodb driver using the pip command:
+- name: install python34-pip
+  yum:
+    name: python34-pip
+    state: present
+
+- name: install pymongo
+  pip:
+    name: pymongo
+    state: present

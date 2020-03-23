@@ -1,0 +1,31 @@
+---
+# tasks file for mongodb
+
+- name: create mongodb.repo
+  file:
+     path: /etc/yum.repos.d/mongodb.repo
+     state: touch
+
+- name: edit file mongodb.repo
+  blockinfile:
+       path: /etc/yum.repos.d/mongodb.repo
+       block: |
+             [MongoDB]
+             name=MongoDB Repository
+             baseurl=http://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/$basearch/
+             gpgcheck=1
+             enabled=1
+             gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
+
+- name: install mongodb
+  yum:
+    name: mongodb-org
+    state: present
+
+- name: start and enable mongod.service
+  systemd:
+     name: mongod
+     state: restarted
+     enabled: yes
+
+

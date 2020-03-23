@@ -1,0 +1,32 @@
+---
+# tasks file for maven
+
+- name: download maven
+  get_url:
+       url: https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+       dest: /opt
+
+- name: extract archive
+  unarchive:
+       src: /opt/apache-maven-3.6.3-bin.tar.gz
+       dest: /opt
+       remote_src: yes
+
+- name: delete tar.gz
+  file:
+     name: /opt/apache-maven-3.6.3-bin.tar.gz
+     state: absent
+
+
+- name: create file mvn.sh
+  file:
+     path: /etc/profile.d/mvn.sh
+     state: touch
+
+- name: edit file mvn.sh
+  blockinfile:
+         path: /etc/profile.d/mvn.sh
+         block: |
+            export M2_HOME=/opt/maven
+            export MAVEN_HOME=/opt/maven
+            export PATH=${M2_HOME}/bin:${PATH}

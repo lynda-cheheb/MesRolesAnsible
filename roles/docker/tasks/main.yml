@@ -1,0 +1,38 @@
+---
+# tasks file for docker
+# install the dependencies
+- name: install yum-utils
+  yum:
+     name: yum-utils
+     state: present
+
+- name: install device-mapper-persistent-data
+  yum:
+     name: device-mapper-persistent-data
+     state: present
+
+- name: install lvm2
+  yum:
+     name: lvm2
+     state: present
+
+
+# add the docker repositoryto CentOs
+- name: add the docker repository to CentOs
+  shell:
+       cmd: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  args:
+      creates: /etc/yum.repos.d/docker-ce.repo
+
+#install docker
+- name: install docker
+  yum:
+     name: docker-ce
+     state: present
+
+# docker as service and enabled it
+- name:
+  systemd:
+       name: docker
+       state: started
+       enabled: yes

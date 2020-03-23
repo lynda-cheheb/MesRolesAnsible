@@ -1,0 +1,28 @@
+---
+# tasks file for nginx
+
+- name: create nginx.repo
+  file:
+     path: /etc/yum.repos.d/nginx.repo
+     state: touch
+
+- name: edit file nginx.repo
+  blockinfile:
+       path: /etc/yum.repos.d/nginx.repo
+       block: |
+           [nginx]
+           name=nginx repo
+           baseurl=http://nginx.org/packages/mainline/centos/7/$basearch/
+           gpgcheck=0
+           enabled=1
+
+- name: install nginx server
+  yum:
+     name: nginx
+     state: present
+
+- name: start and enable nginx
+  service:
+     name: nginx
+     state: restarted
+     enabled: yes

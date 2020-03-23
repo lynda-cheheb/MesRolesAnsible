@@ -1,0 +1,18 @@
+---
+# tasks file for python
+
+- name: download python-3.8.2
+  get_url:
+      url: https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
+      dest: /opt
+
+- name: extract archive
+  unarchive:
+        src: /opt/Python-3.8.2.tgz
+        dest: /opt
+        remote_src: yes
+
+- name: delete Python-3.8.2.tgz
+  file:
+     name: /opt/Python-3.8.2.tgz
+     state: absent

@@ -1,0 +1,28 @@
+---
+# tasks file for azurecli
+
+- name: Import the Microsoft repository key
+  rpm_key:
+      key: https://packages.microsoft.com/keys/microsoft.asc
+      state: present
+
+- name: create local azure-cli repository information
+  file:
+     path: /etc/yum.repos.d/azure-cli.repo
+     state: touch
+
+- name: edit azure-cli.repo
+  blockinfile:
+       path: /etc/yum.repos.d/azure-cli.repo
+       block: |
+             [azure-cli]
+             name=Azure CLI
+             baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+             enabled=1
+             gpgcheck=1
+             gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+
+- name: install azure CLI
+  yum:
+     name: azure-cli
+     state: present
